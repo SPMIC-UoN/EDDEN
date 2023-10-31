@@ -4,7 +4,6 @@ dPath=$1
 dataset=$2
 mask=$3
 
-
 # DTI
 #rm -r ${dPath}/data.dti
 mkdir -p ${dPath}/data.dti
@@ -35,16 +34,3 @@ else
     fslmaths ${dPath}/data.nii.gz -sub ${dPath}/data.dki/dki_pred.nii.gz -mas ${mask} ${dPath}/data.dki/dki_residuals.nii.gz
     smoothest -d 8 -r ${dPath}/data.dki/dki_residuals.nii.gz -m ${mask} > ${dPath}/data.dki/smoothest_res.txt
 fi
-
-
-mask=/home/data/Denoising/data/Dataset_B/aux/nodif_brain_mask_ero.nii.gz
-for rep in rep1 rep2 rep4 rep5; do
-dPath=${rep}/NLM/analysis/dMRI/processed/data_30dirs
-dtifit -k ${dPath}/data.dti/data_b1k.nii.gz -o ${dPath}/data.dti/dti -m ${mask} -r ${dPath}/data.dti/data_b1k.bvec -b ${dPath}/data.dti/data_b1k.bval --save_tensor 
-done
-
-ds=Dataset_B
-for rep in rep1 rep2 rep4 rep5; do 
-mkdir -p ${rep}/NLM/analysis/dMRI/processed/data_30dirs/data.dti
-fslroi ${rep}/NLM/analysis/dMRI/processed/data/data.dti/data_b1k.nii.gz ${rep}/NLM/analysis/dMRI/processed/data_30dirs/data.dti/data_b1k.nii.gz 22 35 & 
-done
